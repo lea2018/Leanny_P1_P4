@@ -8,6 +8,14 @@ public class AutoresService
 {
     private readonly Database _database;
 
+    private sealed record AutorData(
+        long IdAutor,
+        string Nombres,
+        string Nacionalidad,
+        string FechaNacimiento,
+        double Sueldo
+    );
+
     public AutoresService(Database database)
     {
         _database = database;
@@ -54,7 +62,16 @@ public class AutoresService
             ORDER BY IdAutor ASC;
             """;
 
-        return await connection.QueryAsync<Autor>(query);
+        var autoresData = await connection.QueryAsync<AutorData>(query);
+
+        return autoresData.Select(autorData =>
+            new Autor(
+                (int)autorData.IdAutor,
+                autorData.Nombres,
+                autorData.Nacionalidad,
+                DateTime.Parse(autorData.FechaNacimiento),
+                (decimal)autorData.Sueldo
+            ));
     }
 
     public async Task<Autor?> GetByIdAsync(int id)
@@ -72,9 +89,22 @@ public class AutoresService
             WHERE IdAutor = @IdAutor;
             """;
 
-        return await connection.QueryFirstOrDefaultAsync<Autor>(
+        var autorData = await connection.QueryFirstOrDefaultAsync<AutorData>(
             query,
             new { IdAutor = id });
+
+        if (autorData is null)
+        {
+            return null;
+        }
+
+        return new Autor(
+            (int)autorData.IdAutor,
+            autorData.Nombres,
+            autorData.Nacionalidad,
+            DateTime.Parse(autorData.FechaNacimiento),
+            (decimal)autorData.Sueldo
+        );
     }
 
     public async Task<bool> UpdateAsync(int id, Autor autor)
