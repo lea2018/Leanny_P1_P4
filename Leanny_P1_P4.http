@@ -1,0 +1,6 @@
+@Leanny_P1_P4_HostAddress = http://localhost:5043
+
+GET {{Leanny_P1_P4_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
