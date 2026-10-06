@@ -22,11 +22,9 @@ using (var scope = app.Services.CreateScope())
     await initializer.InitializeAsync();
 }
 
-if (app.Environment.IsDevelopment())
-{
     app.MapOpenApi();
     app.MapScalarApiReference();
-}
+
 
 app.UseHttpsRedirection();
 
