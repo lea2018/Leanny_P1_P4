@@ -20,12 +20,15 @@ public class AutoresController : ControllerBase
     {
         var id = await _service.SaveAsync(autor);
 
-        autor.IdAutor = id;
+        var autorCreado = autor with
+        {
+            IdAutor = id
+        };
 
         return CreatedAtAction(
             nameof(GetById),
             new { id },
-            autor);
+            autorCreado);
     }
 
     [HttpGet]
@@ -59,9 +62,12 @@ public class AutoresController : ControllerBase
             return NotFound();
         }
 
-        autor.IdAutor = id;
+        var autorActualizado = autor with
+        {
+            IdAutor = id
+        };
 
-        return Ok(autor);
+        return Ok(autorActualizado);
     }
 
     [HttpDelete("{id}")]

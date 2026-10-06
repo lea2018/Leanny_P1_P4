@@ -1,14 +1,10 @@
 ﻿namespace Leanny_P1_P4.Models;
 
-public class Autor
-{
-    public int IdAutor { get; set; }
+public record Autor(
+    int IdAutor,
+    string Nombres,
+    string Nacionalidad,
+    DateTime FechaNacimiento,
+    decimal Sueldo
+);
 
-    public string Nombres { get; set; } = string.Empty;
-
-    public string Nacionalidad { get; set; } = string.Empty;
-
-    public DateTime FechaNacimiento { get; set; }
-
-    public decimal Sueldo { get; set; }
-}
